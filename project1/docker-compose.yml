@@ -1,0 +1,77 @@
+version: "3"
+services:
+  fluentd:
+    image: cestinger/project1:fluentd
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp" 
+    volumes:
+      - /tmp/fluent/data:/data
+      - ./fluentd/conf:/fluentd/etc
+    links:
+      - "elasticsearch"
+    networks:
+      - webnet
+  web:
+    image: cestinger/project1:web
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "80:80"
+    networks:
+      - webnet
+    links:
+      - fluentd
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: web.logs
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - /tmp/docker/data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - webnet
+    links:
+      - fluentd
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        tag: redis.logs
+  elasticsearch:
+    image: elasticsearch
+    ports:
+      - "9200:9200"
+    volumes:
+      - /tmp/elasticsearch/data:/usr/share/elasticsearch/data
+    environment:
+      - cluster.name=test-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - webnet
+  kibana:
+    image: kibana
+    links:
+      - "elasticsearch"
+    ports:
+      - "5601:5601"
+    networks:
+      - webnet
+networks:
+    webnet:
