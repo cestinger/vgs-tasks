@@ -9,9 +9,9 @@
 
 ## This will provide the following:
 ```
-	test website - http://localhost:80
-	kibana - http://localhost:5601
-	elasticsearch - http://localhost:9200
-	redis - http://localhost:6379
-	fluentd - http://localhost:24224
+	http://localhost:80 - test website from docker tutorials with redis counter 
+	http://localhost:6379 - redis 
+	http://localhost:24224 - all logs from web and redis containers are forwarded to fluentd
+	http://localhost:9200 - logs that go to fluentd are then forward through to elasticsearch
+	http://localhost:5601 - to see the logs in kibana, set up the default mapping to be files that start with fluentd-* and take the default timestamp
 ```
