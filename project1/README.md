@@ -2,6 +2,7 @@
 ```
 	clone repo on machine that has docker installed
 	cd into project1 and run the following:
+    mkdir -p /tmp/fluent/data /tmp/docker/data /tmp/elasticsearch/data
 	docker swarm init
 	docker stack deploy -c docker-compose.yml project1
 ```
