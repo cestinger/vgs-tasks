@@ -17,3 +17,9 @@
 		set up the default mapping to be files that start with fluentd-*
 		take the default timestamp
 ```
+
+## To remove:
+```
+	docker stack rm project1
+	docker swarm leave --force
+```
