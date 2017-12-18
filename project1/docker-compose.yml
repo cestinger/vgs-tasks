@@ -8,10 +8,6 @@ services:
     volumes:
       - /tmp/fluent/data:/data
       - ./fluentd/conf:/fluentd/etc
-    links:
-      - "elasticsearch"
-    networks:
-      - webnet
   web:
     image: cestinger/project1:web
     deploy:
@@ -24,10 +20,6 @@ services:
         condition: on-failure
     ports:
       - "80:80"
-    networks:
-      - webnet
-    links:
-      - fluentd
     logging:
       driver: "fluentd"
       options:
@@ -40,10 +32,6 @@ services:
     volumes:
       - /tmp/docker/data:/data
     command: redis-server --appendonly yes
-    networks:
-      - webnet
-    links:
-      - fluentd
     logging:
       driver: "fluentd"
       options:
@@ -63,15 +51,9 @@ services:
       memlock:
         soft: -1
         hard: -1
-    networks:
-      - webnet
   kibana:
     image: kibana
-    links:
-      - "elasticsearch"
     ports:
       - "5601:5601"
-    networks:
-      - webnet
 networks:
     webnet:
