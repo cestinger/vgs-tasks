@@ -1,9 +1,10 @@
 ## To run:
-
-clone repo on machine that has docker installed
-cd into project1 and run the following:
+```
+	clone repo on machine that has docker installed
+	cd into project1 and run the following:
 	docker swarm init
 	docker stack deploy -c docker-compose.yml project1
+```
 
 ## This will provide the following:
 ```
