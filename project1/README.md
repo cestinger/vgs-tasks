@@ -14,6 +14,6 @@
 	http://localhost:24224 - all logs from web and redis containers are forwarded to fluentd
 	http://localhost:9200 - logs that go to fluentd are then forward through to elasticsearch
 	http://localhost:5601 - to see the logs in kibana - 
-							set up the default mapping to be files that start with fluentd-*
-							take the default timestamp
+		set up the default mapping to be files that start with fluentd-*
+		take the default timestamp
 ```
