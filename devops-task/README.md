@@ -1,57 +1,56 @@
-Devops task for VGS
+# Devops task for VGS
 
 This project will spin up a small environment with a load balancer and 2 web servers.  All containers in the environment forward their logs to a centralized log server using fluentd.  Those logs are then copied to an elasticsearch server.  A kibana server is included to view the data.  An ansible control server is also included to apply roles within the environment.
 
-Traffic flow:
+## Traffic flow:
 
 <img src="devops-task.png"
      alt="Traffic flow"
-     style="float: left; margin-right: 10px;" />
+     style="float: left; margin-right: 10px; margin-bottom: 30px" />
 
-The purpose of this project is to be able to test Ansible roles locally and in Docker containers, with docker-compose.
+## Assumptions and things of Note
 
-To provide an example, included are roles to create a complete local stack load-balanced by HAProxy and served by Nginx, [Compliments of Sysadmin Casts. ](https://sysadmincasts.com/episodes/47-zero-downtime-deployments-with-ansible-part-4-4)
+This is a test environment only - adding private keys to repositories is never a good idea, so that is only included to allow for ease of building and running this environment to exemplify function.  Same with adding so many extra parts and pieces to the containers as part of roles.  Seems like there is a balancing point there with when to run a role vs. when to create a container depending on the install and how much time it takes.
 
-The control node is Ubuntu and target "hosts" are Amazon Linux, with full init-systems and SSH access.  Basically, not the way you want to run containers but serves its purpose as a lightweight training environment.
+I have learned a lot with docker and ansible in the last couple of days and am already thinking of ways I could do things differently, but had to find a stopping place or I would never be able to turn anything over. :)
 
-### Getting Started
-First install Docker for Mac: https://download.docker.com/mac/stable/Docker.dmg
+## Pre-reqs
 
-```bash
-chmod 0600 ./env/ansible*
-docker-compose up -d
-cat env/ssh_host_config >> ~/.ssh/config
-ssh control # do this from the repo root
+The machine where this is being run has a linux variant of Docker engine running and an internet connection.
+
+## To create the environment
 ```
-
-### Running the example playbooks:
-```bash
-ansible@control:~$ cd ansible/
-ansible@control:~/ansible$ ansible-playbook site.yml
-ansible@control:~/ansible$ ansible-playbook playbooks/stack_status.yml`
-open http://localhost:8001 # on your Mac
-```
-
-After HAProxy role finishes, or when applying *ansible-playbook blog.yml*, continuously refresh <http://localhost:8001/haproxy?stats> to watch the backends being taken out of service 50% at a time to apply the blog.
-
-`curl http://localhost:8001` a few times.  You will see "Served by web1/web2" cycling.
-
-To see Apache benchmarks run `ansible-playbook playbooks/stack_status.yml`
-
-### Vault
-If you want to add any secrets, store them in ansible-vault:
-`ansible-vault edit group_vars/all/vault`
-* **Note**: This works because the vault password is injected during the Dockerfile-control build.  For testing only.
-
-After you edit the vault, add the variable to `group_vars/all/vars.yml`
-An example is included.
-
-### How to re-build Docker images:
-```bash
-docker-compose down
+git clone
+cd devops-task
+choose your environment:
+  for prod - cp prod.env .env
+  for dev - cp dev.env .env
+  for the purposes of this document, we will assume the dev profile has been used
+verify environment variables - env
+create local shared volumes:
+  mkdir -p /tmp/elasticsearch/data /tmp/fluent/data
 docker-compose build
 docker-compose up -d
+cd env
+log on to the ansible control server and finish building out the environemnt:
+  ssh -i ansible -p 2200 ansible@localhost
+  cd ansible
+  ansible-playbook site.yml
 ```
 
-#### Final Note:
-Be sure not to copy the private key *env/ansible* anywhere.  It was generated for the purposes of this test stack, not to be uploaded anywhere else.
+## To use the environment
+```
+Pull up the address to the load balancer to see the test site:
+  http://localhost:8001
+You can also view the site on each individual container:
+  http://localhost:8081
+  http://localhost:8082
+This will produce log traffic that can be viewed at:
+  http://localhost:5061
+```
+
+## To remove the environment
+```
+docker-compose down
+docker-compose rm
+```
