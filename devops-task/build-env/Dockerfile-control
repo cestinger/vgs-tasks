@@ -11,16 +11,12 @@ RUN apt-get update && \
 
 COPY ssh_config /home/ansible/.ssh/config
 COPY ansible /home/ansible/.ssh/id_rsa
+RUN chmod 0600 /home/ansible/.ssh/id_rsa
 COPY ansible.pub /home/ansible/.ssh/id_rsa.pub
 COPY ansible.pub /home/ansible/.ssh/authorized_keys
 
 RUN chown -R ansible:ansible /home/ansible/ && \
   echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-
-# Distribute vault pw just for this demo
-RUN echo "ansiblevagrant" > /home/ansible/.vault_pass.txt && \
-  chmod 0600 /home/ansible/.vault_pass.txt && \
-  chown ansible /home/ansible/.vault_pass.txt
 
 # Following lines taken from: https://github.com/tianon/dockerfiles
 #

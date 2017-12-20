@@ -14,6 +14,10 @@ This is a test environment only - adding private keys to repositories is not a g
 
 I have learned a lot with docker and ansible in the last couple of days and am already thinking of ways I could do things differently, but had to find a stopping place or I would never be able to turn anything over. :)  This exercise is a bit of a franken-system with parts and pieces from all over the internet.  This was to aid in learning and efficiency to get a working layout.
 
+Building the environment does take a bit of time, it could be speedier if I utilize more fully built containers. This would be one course of action if we wanted to use elasticity in scaling the environment using something like beanstalk.
+
+The application of roles should be idempotent.  I do not have this implemented across the board in the roles used at this point.
+
 ## Pre-reqs
 
 The machine where this is being run has a linux variant of Docker engine running and an internet connection.
@@ -33,6 +37,8 @@ create local shared volumes:
 docker-compose build
 docker-compose up -d
 cd build-env
+make sure local perms for private file are correct:
+  chmod 0600 build-env/ansible
 log onto the ansible control server and finish building out the environment:
   ssh -i ansible -p 2200 ansible@localhost
   cd ansible
