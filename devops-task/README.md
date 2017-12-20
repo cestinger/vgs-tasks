@@ -20,7 +20,7 @@ The machine where this is being run has a linux variant of Docker engine running
 
 ## To create the environment
 ```
-git clone
+git clone git@github.com:cestinger/vgs-tasks.git
 cd devops-task
 choose your environment:
   for prod - cp prod.env .env
@@ -32,7 +32,7 @@ create local shared volumes:
   mkdir -p /tmp/elasticsearch/data /tmp/fluent/data
 docker-compose build
 docker-compose up -d
-cd env
+cd build-env
 log onto the ansible control server and finish building out the environment:
   ssh -i ansible -p 2200 ansible@localhost
   cd ansible
@@ -69,6 +69,6 @@ docker-compose rm
 
 ## Special thanks to
 Resources that were of great assistance:
-  https://github.com/andymotta/ansible-docker-compose.git
-  https://github.com/ansiblebit/oracle-java - because downloading the jdk from Oracle is always so much fun
-  https://galaxy.ansible.com - lots of great contributors made it easy to find examples
+  <b>https://github.com/andymotta/ansible-docker-compose.git
+  <b>https://github.com/ansiblebit/oracle-java - because downloading the jdk from Oracle is always so much fun
+  <b>https://galaxy.ansible.com - lots of great contributors made it easy to find examples

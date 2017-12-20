@@ -1,0 +1,55 @@
+Host control
+  HostName 127.0.0.1
+  Port 2200
+  User ansible
+  IdentityFile ./env/ansible
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+
+Host lb
+  HostName 127.0.0.1
+  Port 2201
+  User ansible
+  IdentityFile ./env/ansible
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+
+Host web1
+  HostName 127.0.0.1
+  Port 2211
+  User ansible
+  IdentityFile ./env/ansible
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+
+Host web2
+  HostName 127.0.0.1
+  Port 2212
+  User ansible
+  IdentityFile ./env/ansible
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+
+Host fluentd
+  HostName 127.0.0.1
+  Port 2213
+  User ansible
+  IdentityFile ./env/ansible
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+
+Host elasticsearch
+  HostName 127.0.0.1
+  Port 2214
+  User ansible
+  IdentityFile ./env/ansible
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+
+Host kibana
+  HostName 127.0.0.1
+  Port 2215
+  User ansible
+  IdentityFile ./env/ansible
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null

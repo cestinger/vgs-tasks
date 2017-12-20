@@ -3,7 +3,7 @@ version: "2.1"
 services:
   fluentd:
     build: 
-      context: ./env
+      context: ./build-env
       dockerfile: Dockerfile-fluentd
     hostname: fluentd
     ports:
@@ -19,7 +19,7 @@ services:
         tag: fluentd.log 
   control:
     build: 
-      context: ./env
+      context: ./build-env
       dockerfile: Dockerfile-control
     hostname: control
     links:
@@ -42,7 +42,7 @@ services:
         tag: control.log 
   lb:
     build: 
-      context: ./env
+      context: ./build-env
       dockerfile: Dockerfile-general
     hostname: lb
     links:
@@ -61,7 +61,7 @@ services:
         tag: lb.log 
   web1:
     build: 
-      context: ./env
+      context: ./build-env
       dockerfile: Dockerfile-general
     hostname: web1
     ports:
@@ -78,7 +78,7 @@ services:
         tag: web1.log 
   web2:
     build: 
-      context: ./env
+      context: ./build-env
       dockerfile: Dockerfile-general
     hostname: web2
     ports:
@@ -95,7 +95,7 @@ services:
         tag: web2.log 
   elasticsearch:
     build: 
-      context: ./env
+      context: ./build-env
       dockerfile: Dockerfile-general
     hostname: elasticsearch
     ports: 
@@ -112,7 +112,7 @@ services:
         tag: elasticsearch.log 
   kibana:
     build: 
-      context: ./env
+      context: ./build-env
       dockerfile: Dockerfile-general
     hostname: kibana
     ports: 
