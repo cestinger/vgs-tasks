@@ -69,6 +69,6 @@ docker-compose rm
 
 ## Special thanks to
 Resources that were of great assistance:
-  <b>https://github.com/andymotta/ansible-docker-compose.git
-  <b>https://github.com/ansiblebit/oracle-java - because downloading the jdk from Oracle is always so much fun
-  <b>https://galaxy.ansible.com - lots of great contributors made it easy to find examples
+  <br>https://github.com/andymotta/ansible-docker-compose.git
+  <br>https://github.com/ansiblebit/oracle-java - because downloading the jdk from Oracle is always so much fun
+  <br>https://galaxy.ansible.com - lots of great contributors made it easy to find examples
