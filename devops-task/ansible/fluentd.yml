@@ -1,0 +1,5 @@
+---
+- hosts: fluentd
+  become: true
+  roles:
+    - fluentd

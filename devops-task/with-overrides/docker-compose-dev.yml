@@ -1,0 +1,79 @@
+version: "2"
+  
+services:
+  fluentd:
+    ports:
+      - "2213:22"
+      - "24224:24224"
+      - "24224:24224/udp"
+    volumes:
+      - /tmp/fluent/data:/data
+    logging:
+      options:
+        fluentd-address: "localhost:24224"
+  control:
+    ports:
+      - "2200:22"
+    volumes:
+      - ./ansible:/home/ansible/ansible
+    depends_on:
+      - "fluentd"
+    logging:
+      options:
+        fluentd-address: "localhost:24224"
+  lb:
+    ports:
+      - "2201:22"
+      - "8001:80"
+    depends_on:
+      - "fluentd"
+    links:
+      - web1
+      - web2
+    logging:
+      options:
+        fluentd-address: "localhost:24224"
+  web1:
+    ports:
+      - "2211:22"
+      - "8081:80"
+    depends_on:
+      - "fluentd"
+    links:
+      - lb
+    logging:
+      options:
+        fluentd-address: "localhost:24224"
+  web2:
+    ports:
+      - "2212:22"
+      - "8082:80"
+    depends_on:
+      - "fluentd"
+    links:
+      - lb
+    logging:
+      options:
+        fluentd-address: "localhost:24224"
+  elasticsearch:
+    ports: 
+      - "9200:9200"
+      - "2214:22" 
+    volumes:
+      - /tmp/elasticsearch/data:/data
+    depends_on:
+      - "fluentd"
+    logging:
+      options:
+        fluentd-address: "localhost:24224"
+  kibana:
+    ports: 
+      - "5601:5601"
+      - "2215:22" 
+    volumes:
+      - /tmp/elasticsearch/data:/data
+    depends_on:
+      - "fluentd"
+    logging:
+      options:
+        fluentd-address: "localhost:24224"
