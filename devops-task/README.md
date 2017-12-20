@@ -10,7 +10,7 @@ This project will spin up a small environment with a load balancer and 2 web ser
 
 ## Assumptions and things of Note
 
-This is a test environment only - adding private keys to repositories is not a good idea, so that is only included to allow for ease of building and running this environment to exemplify function.  Same with adding so many extra parts and pieces to the containers as part of roles.  It seems like there is a balancing point with when to run a role vs. when to create a container depending on the install and how much time it takes.
+This is a test environment only - adding private keys to repositories is not a good idea, so that is only included to allow for ease of building and running this environment to exemplify function.  Same with adding so many extra parts and pieces to the containers as part of roles.  It seems like there is a balancing point for when to run a role vs. when to create a container depending on the install and how much time it takes.
 
 I have learned a lot with docker and ansible in the last couple of days and am already thinking of ways I could do things differently, but had to find a stopping place or I would never be able to turn anything over. :)  This exercise is a bit of a franken-system with parts and pieces from all over the internet.  This was to aid in learning and efficiency to get a working layout.
 
@@ -20,7 +20,7 @@ The application of roles should be idempotent.  I do not have this implemented a
 
 ## Pre-reqs
 
-The machine where this is being run has a linux variant of Docker engine running and an internet connection.
+The machine where this is being run has a linux variant of Docker engine running and an internet connection.  This has only been tested on mac.
 
 ## To create the environment
 ```
@@ -49,11 +49,14 @@ log onto the ansible control server and finish building out the environment:
 ```
 Pull up the address to the load balancer to see the test site:
   http://localhost:8001
-You can also view the site on each individual container:
+You can also view the site on each individual webserver container:
   http://localhost:8081
   http://localhost:8082
 This will produce log traffic that can be viewed at:
-  http://localhost:5061
+  http://localhost:5601
+    To view logs, go to Management, Index Patterns, fluentd-* is the pattern, @timestamp is the timestamp to use.
+This will show you status of the elasticsearch server:
+  http://localhost:9200
 To ssh to a server in the environment:
   start in devops-task/env
   ssh -i ansible -p ${PORT} ansible@localhost
