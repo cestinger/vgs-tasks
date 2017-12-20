@@ -24,7 +24,7 @@ The machine where this is being run has a linux variant of Docker engine running
 
 ## To create the environment
 ```
-git clone git@github.com:cestinger/vgs-tasks.git
+git clone https://github.com/cestinger/vgs-tasks.git
 cd devops-task
 choose your environment:
   for prod - cp prod.env .env
