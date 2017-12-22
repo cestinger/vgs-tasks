@@ -2,56 +2,19 @@ version: "2.1"
 
 services:
   fluentd:
-    build: 
-      context: ./build-env
-      dockerfile: Dockerfile-fluentd
+    image: cestinger/project1:fluentd 
     hostname: fluentd
     ports:
-      - "2213:22"
       - "${LOG_PORT}:24224"
       - "${LOG_PORT}:24224/udp"
     volumes:
+      - ./build-env/fluentconf:/fluentd/etc
       - /tmp/fluent/data:/data
-    logging: 
-      driver: ${LOG_DRIVER}
-      options:
-        fluentd-address: "${LOG_HOST}:${LOG_PORT}"
-        tag: fluentd.log 
-  control:
-    build: 
-      context: ./build-env
-      dockerfile: Dockerfile-control
-    hostname: control
-    links:
-      - lb
-      - web1
-      - web2
-      - fluentd
-      - elasticsearch
-      - kibana
+  web3:
+    image: cestinger/devops-task:nginx 
+    hostname: web3
     ports:
-      - "2200:22"
-    volumes:
-      - ./ansible:/home/ansible/ansible
-    depends_on:
-      - fluentd
-    logging: 
-      driver: ${LOG_DRIVER}
-      options:
-        fluentd-address: "${LOG_HOST}:${LOG_PORT}"
-        tag: control.log 
-  lb:
-    build: 
-      context: ./build-env
-      dockerfile: Dockerfile-general
-    hostname: lb
-    links:
-      - web1
-      - web2
-      - fluentd
-    ports:
-      - "2201:22"
-      - "8001:80"
+      - "8083:80"
     depends_on:
       - fluentd
     logging: 
@@ -60,15 +23,10 @@ services:
         fluentd-address: "${LOG_HOST}:${LOG_PORT}"
         tag: lb.log 
   web1:
-    build: 
-      context: ./build-env
-      dockerfile: Dockerfile-general
+    image: cestinger/devops-task:nginx
     hostname: web1
     ports:
-      - "2211:22"
       - "8081:80"
-    links:
-      - fluentd
     depends_on:
       - fluentd
     logging: 
@@ -77,15 +35,10 @@ services:
         fluentd-address: "${LOG_HOST}:${LOG_PORT}"
         tag: web1.log 
   web2:
-    build: 
-      context: ./build-env
-      dockerfile: Dockerfile-general
+    image: cestinger/devops-task:nginx
     hostname: web2
     ports:
-      - "2212:22"
       - "8082:80"
-    links:
-      - fluentd
     depends_on:
       - fluentd
     logging: 
@@ -94,15 +47,12 @@ services:
         fluentd-address: "${LOG_HOST}:${LOG_PORT}"
         tag: web2.log 
   elasticsearch:
-    build: 
-      context: ./build-env
-      dockerfile: Dockerfile-general
+    image: elasticsearch 
     hostname: elasticsearch
     ports: 
       - "9200:9200"
-      - "2214:22" 
     volumes:
-      - /tmp/elasticsearch/data:/data
+      - /tmp/elasticsearch/data:/usr/share/elasticsearch/data
     depends_on:
       - fluentd
     logging: 
@@ -110,18 +60,15 @@ services:
       options:
         fluentd-address: "${LOG_HOST}:${LOG_PORT}"
         tag: elasticsearch.log 
+    environment:
+      - cluster.name=test-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
   kibana:
-    build: 
-      context: ./build-env
-      dockerfile: Dockerfile-general
+    image: kibana 
     hostname: kibana
     ports: 
       - "5601:5601"
-      - "2215:22" 
-    links:
-      - elasticsearch
-    volumes:
-      - /tmp/elasticsearch/data:/data
     depends_on:
       - fluentd
     logging: 
