@@ -9,7 +9,6 @@ services:
       - "${LOG_PORT}:24224/udp"
     volumes:
       - ./build-env/fluentconf:/fluentd/etc
-      - /tmp/fluent/data:/data
   web3:
     image: cestinger/devops-task:nginx 
     hostname: web3
@@ -21,7 +20,7 @@ services:
       driver: ${LOG_DRIVER}
       options:
         fluentd-address: "${LOG_HOST}:${LOG_PORT}"
-        tag: lb.log 
+        tag: web3.log 
   web1:
     image: cestinger/devops-task:nginx
     hostname: web1
