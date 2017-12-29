@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - setup:
+      filter: ansible_eth*
+
+- import_playbook: control.yml
+- import_playbook: webserver.yml
+- import_playbook: loadbalancer.yml
+- import_playbook: blog.yml
+- import_playbook: elasticsearch.yml
+- import_playbook: fluentd.yml
+- import_playbook: kibana.yml

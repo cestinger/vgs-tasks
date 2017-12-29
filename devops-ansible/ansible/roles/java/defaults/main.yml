@@ -1,0 +1,9 @@
+---
+# defaults file for java
+java_version: 8
+java_version_update: 151
+java_version_build: 12
+java_rpm_package_name: "jdk-{{java_version}}u{{java_version_update}}-linux-x64.rpm"
+java_download_url: "http://download.oracle.com/otn-pub/java/jdk/{{java_version}}u{{java_version_update}}-b{{java_version_build}}/e758a0de34e24606bca991d704f6dcbf/{{java_rpm_package_name}}"
+java_home: "/usr/java/jdk1.{{java_version}}.0_{{java_version_update}}"
+# curl -v -O -L -b oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.rpm
