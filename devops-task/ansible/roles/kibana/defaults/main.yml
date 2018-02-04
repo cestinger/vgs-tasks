@@ -1,9 +1,0 @@
----
-# defaults file for kibana
-kibana_version: 6.1.0
-kibana_yum_package_name: "kibana-{{kibana_version}}-x86_64.rpm"
-kibana_download_url: "https://artifacts.elastic.co/downloads/kibana/{{kibana_yum_package_name}}"
-kibana_server_port: "5601"
-kibana_server_host: "kibana"
-kibana_server_name: "kibana"
-kibana_elasticsearch_url: "http://elasticsearch:9200"

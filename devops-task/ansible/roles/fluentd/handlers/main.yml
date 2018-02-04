@@ -1,4 +1,0 @@
----
-# handlers file for fluentd
-- name: restart fluentd
-  service: name=td-agent state=restarted 

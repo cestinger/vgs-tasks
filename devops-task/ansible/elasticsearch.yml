@@ -1,6 +1,0 @@
----
-- hosts: elasticsearch
-  become: true
-  roles:
-    - java
-    - elasticsearch
